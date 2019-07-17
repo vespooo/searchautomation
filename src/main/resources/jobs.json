@@ -1,0 +1,13 @@
+{
+  "urlPattern": {
+    "url": "https://www.google.com/search?q=${param}&rlz=1C1CHBF_enUS837US837&oq=${param}&aqs=chrome.0.69i59j69i60j69i59l2j69i57j69i60.6609j0j7&sourceid=chrome&ie=UTF-8&ibp=htl;jobs&sa=X&ved=2ahUKEwi_iN_TtoviAhVXgp4KHTUfAg4QiYsCKAB6BAgJEAM#fpstate=tldetail&htidocid=9KWh0trkQiu_5IbyAAAAAA%3D%3D&htivrt=jobs",
+    "params": {
+      "param": "data+analyst"
+    }
+  },
+  "minedPattern" : {
+    "startingWith" : "",
+    "endingWith" : ""
+  }
+}
+
