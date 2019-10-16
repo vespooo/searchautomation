@@ -1,6 +1,6 @@
 package app.entity;
 
-public class MindedPattern {
+public class MinedPattern {
     private String startingWith;
     private String endingWith;
 

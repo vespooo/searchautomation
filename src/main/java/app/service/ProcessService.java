@@ -1,5 +1,6 @@
 package app.service;
 
+import app.entity.AnalyzePattern;
 import app.entity.SearchPattern;
 import app.search.SearchController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +26,9 @@ public class ProcessService {
         System.out.print(url);
         return extractor.extract(searchController.requestHtml(url) , pattern.getMinedPattern());
 
+    }
+
+    public void analyze(AnalyzePattern pattern, String html) {
+        extractor.findStartAndEndMinePattern(pattern.getMinedWords(), html);
     }
 }

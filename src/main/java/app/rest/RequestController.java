@@ -1,14 +1,21 @@
 package app.rest;
 
+import app.entity.AnalyzePattern;
 import app.entity.SearchPattern;
 import app.entity.URLPattern;
 import app.search.SearchController;
 import app.service.ProcessService;
 import app.service.StringParameterMapper;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class RequestController {
@@ -26,15 +33,27 @@ public class RequestController {
         return processService.process(pattern);
     }
 
-    @RequestMapping(value = "/url/post", method = RequestMethod.POST)
-    public void helloPost(){
+    @RequestMapping(value = "/analyze", method = RequestMethod.POST, consumes = {"application/json"})
+    public void analyze(@RequestBody AnalyzePattern pattern) {
+        Document doc = null;
+        try {
+            doc = Jsoup.connect(pattern.getUrl())
+                    .userAgent("Mozilla/5.0")
+                    .get();
 
-        System.out.println("Post");;
+            processService.analyze(pattern, doc.html());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
-    @RequestMapping(value = "/url/put", method = RequestMethod.PUT)
-    public void helloPut(){
+    @RequestMapping(value = "/test", method = RequestMethod.POST, consumes = {"text/plain"})
+    public String test(@RequestBody String url){
 
-        System.out.println("Put");;
+        return url;
     }
+
 }

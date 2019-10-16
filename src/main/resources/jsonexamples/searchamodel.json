@@ -1,0 +1,6 @@
+{
+  "url": "https://www.google.ru/maps/search/${param}/@37.6613679,-121.9477432,12z/",
+  "searchWord": "landmark",
+  "minedWords" : ["Dublin Water Tower", "Alamilla Springs"]
+}
+

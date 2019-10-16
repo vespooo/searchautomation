@@ -2,7 +2,7 @@ package app.entity;
 
 public class SearchPattern {
     private URLPattern urlPattern;
-    private MindedPattern minedPattern;
+    private MinedPattern minedPattern;
 
     public URLPattern getUrlPattern() {
         return urlPattern;
@@ -12,11 +12,11 @@ public class SearchPattern {
         this.urlPattern = urlPattern;
     }
 
-    public MindedPattern getMinedPattern() {
+    public MinedPattern getMinedPattern() {
         return minedPattern;
     }
 
-    public void setMinedPattern(MindedPattern minedPattern) {
+    public void setMinedPattern(MinedPattern minedPattern) {
         this.minedPattern = minedPattern;
     }
 }
