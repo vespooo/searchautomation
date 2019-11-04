@@ -1,21 +1,18 @@
 package app.rest;
 
 import app.entity.AnalyzePattern;
+import app.entity.MinedPattern;
 import app.entity.SearchPattern;
-import app.entity.URLPattern;
-import app.search.SearchController;
+import app.exception.MinedPatternException;
 import app.service.ProcessService;
-import app.service.StringParameterMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 public class RequestController {
@@ -27,27 +24,42 @@ public class RequestController {
         this.processService = processService;
     }
 
-    @RequestMapping(value = "/url", method = RequestMethod.POST, consumes = {"application/json"})
-    public List<String> minedText(@RequestBody SearchPattern pattern){
+    /**
+     * Constructs requests using {@link app.entity.URLPattern} to get html page
+     * And then extracts a list of phrases between {@link MinedPattern} in the html.
+     * @param pattern JSON request body
+     * @return list of mined phrases
+     */
+    @RequestMapping(value = "/extract", method = RequestMethod.POST, consumes = {"application/json"})
+    public List<String> extract(@RequestBody SearchPattern pattern){
 
-        return processService.process(pattern);
+        return processService.extract(pattern);
     }
 
+    /**
+     * Gets an html from a url.
+     * And then extracts all phrases between the same pattern in the html, determined using example phrases.
+     * @param pattern JSON request body
+     * @return list of mined phrases in html
+     */
     @RequestMapping(value = "/analyze", method = RequestMethod.POST, consumes = {"application/json"})
-    public void analyze(@RequestBody AnalyzePattern pattern) {
+    public List<String> analyze(@RequestBody AnalyzePattern pattern) {
         Document doc = null;
         try {
             doc = Jsoup.connect(pattern.getUrl())
                     .userAgent("Mozilla/5.0")
                     .get();
 
-            processService.analyze(pattern, doc.html());
+            return processService.analyze(pattern.getMinedWords(), doc.html());
 
         } catch (IOException e) {
             e.printStackTrace();
+            //TODO
+        } catch (MinedPatternException e) {
+            //TODO
         }
 
-
+        return Collections.EMPTY_LIST;
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.POST, consumes = {"text/plain"})

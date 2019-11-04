@@ -1,7 +1,9 @@
 package app.service;
 
-import app.entity.AnalyzePattern;
+import app.entity.MinedPattern;
 import app.entity.SearchPattern;
+import app.exception.EmptyMinedPatternException;
+import app.exception.UncertainMinedPatternException;
 import app.search.SearchController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,25 +12,42 @@ import java.util.List;
 
 @Service
 public class ProcessService {
-    private StringParameterMapper stringParameterMapper;
+    private ParameterMapper parameterMapper;
     private SearchController searchController;
     private Extractor extractor;
 
     @Autowired
-    public ProcessService(StringParameterMapper stringParameterMapper, SearchController searchController, Extractor extractor) {
-        this.stringParameterMapper = stringParameterMapper;
+    public ProcessService(ParameterMapper parameterMapper, SearchController searchController, Extractor extractor) {
+        this.parameterMapper = parameterMapper;
         this.searchController = searchController;
         this.extractor = extractor;
     }
 
-    public List<String> process(SearchPattern pattern) {
-        String url = stringParameterMapper.map(pattern.getUrlPattern().getUrl(), pattern.getUrlPattern().getParams());
-        System.out.print(url);
-        return extractor.extract(searchController.requestHtml(url) , pattern.getMinedPattern());
+    /**
+     * Constructs requests using {@link app.entity.URLPattern} and {@link ParameterMapper}.
+     * Sends requests throw {@link org.springframework.web.client.RestTemplate} to get html page
+     * And then extracts a list of phrases between {@link MinedPattern} pattern in the html.
+     * @param pattern
+     * @return list of mined phrases
+     */
+    public List<String> extract(SearchPattern pattern) {
+        String url = parameterMapper.map(pattern.getUrlPattern());
+        String html = searchController.requestHtml(url);
+        return extractor.extract(html, pattern.getMinedPattern());
 
     }
 
-    public void analyze(AnalyzePattern pattern, String html) {
-        extractor.findStartAndEndMinePattern(pattern.getMinedWords(), html);
+    /**
+     * According to short list of phrases, determines the pattern in the text, between which are these phrases.
+     * And then extracts all phrases between determined pattern.
+     * @param words
+     * @param text
+     * @return list of mined phrases in text
+     * @throws EmptyMinedPatternException
+     * @throws UncertainMinedPatternException
+     */
+    public List<String> analyze(List<String> words, String text) throws EmptyMinedPatternException, UncertainMinedPatternException {
+        MinedPattern minedPattern = extractor.findMinedPattern(words, text);
+        return extractor.extract(text, minedPattern);
     }
 }

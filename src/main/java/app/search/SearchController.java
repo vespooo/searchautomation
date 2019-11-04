@@ -3,6 +3,9 @@ package app.search;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * Rest client
+ */
 @Service
 public class SearchController {
 
@@ -12,9 +15,8 @@ public class SearchController {
         this.restTemplate = restTemplate;
     }
 
+
     public String requestHtml(String url){
-        String response  = restTemplate.getForObject(url, String.class);
-        System.out.print(response);
-        return response;
+        return restTemplate.getForObject(url, String.class);
     }
 }

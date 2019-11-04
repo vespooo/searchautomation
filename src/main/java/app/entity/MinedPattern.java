@@ -1,6 +1,8 @@
 package app.entity;
 
+
 public class MinedPattern {
+
     private String startingWith;
     private String endingWith;
 
