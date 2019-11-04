@@ -15,12 +15,12 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-public class RequestController {
+public class SearchController {
 
     private ProcessService processService;
 
     @Autowired
-    public RequestController(ProcessService processService) {
+    public SearchController(ProcessService processService) {
         this.processService = processService;
     }
 

@@ -1,4 +1,4 @@
-package app.search;
+package app.restclient;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -7,11 +7,11 @@ import org.springframework.web.client.RestTemplate;
  * Rest client
  */
 @Service
-public class SearchController {
+public class RequestController {
 
     private RestTemplate restTemplate;
 
-    public SearchController(RestTemplate restTemplate) {
+    public RequestController(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 

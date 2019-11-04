@@ -33,8 +33,8 @@ public class ParameterMapperTest {
 
     @Test
     public void urlParamsShouldBeMapped(){
-        String url = "https://search/${a}/${b}/";
-        String result = "https://search/aaa/bbb/";
+        String url = "https://restclient/${a}/${b}/";
+        String result = "https://restclient/aaa/bbb/";
 
         HashMap<String, String> params = new HashMap<String, String>() {
             {

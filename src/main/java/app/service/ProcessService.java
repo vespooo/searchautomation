@@ -4,7 +4,7 @@ import app.entity.MinedPattern;
 import app.entity.SearchPattern;
 import app.exception.EmptyMinedPatternException;
 import app.exception.UncertainMinedPatternException;
-import app.search.SearchController;
+import app.restclient.RequestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,13 +13,13 @@ import java.util.List;
 @Service
 public class ProcessService {
     private ParameterMapper parameterMapper;
-    private SearchController searchController;
+    private RequestController requestController;
     private Extractor extractor;
 
     @Autowired
-    public ProcessService(ParameterMapper parameterMapper, SearchController searchController, Extractor extractor) {
+    public ProcessService(ParameterMapper parameterMapper, RequestController requestController, Extractor extractor) {
         this.parameterMapper = parameterMapper;
-        this.searchController = searchController;
+        this.requestController = requestController;
         this.extractor = extractor;
     }
 
@@ -32,7 +32,7 @@ public class ProcessService {
      */
     public List<String> extract(SearchPattern pattern) {
         String url = parameterMapper.map(pattern.getUrlPattern());
-        String html = searchController.requestHtml(url);
+        String html = requestController.requestHtml(url);
         return extractor.extract(html, pattern.getMinedPattern());
 
     }
